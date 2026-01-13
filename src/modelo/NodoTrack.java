@@ -1,4 +1,4 @@
-//Unidad básica que compone la estructura de la lista doblemente enlazada.
+//2. Unidad básica que compone la estructura de la lista doblemente enlazada.
 package modelo;
 
 public class NodoTrack {

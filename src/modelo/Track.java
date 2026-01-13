@@ -1,4 +1,4 @@
-//Representación de pista de audio.
+//1. Representación de pista de audio.
 package modelo;
 
 public class Track { //Constructor

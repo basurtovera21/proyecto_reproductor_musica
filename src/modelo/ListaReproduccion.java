@@ -1,3 +1,4 @@
+//3. Estructura: Lista doblemente enlazada; administración del orden de reproducción.
 package modelo;
 
 public class ListaReproduccion {
