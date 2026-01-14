@@ -47,41 +47,49 @@ public class Main extends Application { //Main hereda de la clase "Application" 
     private Rectangle rectPortada = new Rectangle(300, 300); //Configuración inicial (anch, alt).
     private ListView<Track> listaReproduccionVisual = new ListView <>();
 
+    //Controles de interacción directa del usuario (controladores).
     private Button btnReproducirPausar, btnAnterior, btnSiguiente; 
     private Button btnModoAleatorio, btnModoRepetir;
     private Button btnDesplazarArriba, btnDesplazarAbajo, btnImportarCarpeta;
 
+    //Recursos gráficos cargados en memoria para iconografía de la interfaz.
     private Image imgReproducir, imgPausar, imgSiguiente, imgAnterior;
     private Image imgModoAleatorioOff, imgModoAleatorioOn;
     private Image imgModoRepetirOff, imgModoRepetirOn, imgimgModoRepetirUno;
     private Image imgVolumen, imgImportarCarpeta, imgDesplazarArriba, imgDesplazarAbajo;
 
-    private ListaReproduccion listaReproduccion = new ListaReproduccion();
-    private PilaHistorialReproduccion historialReproduccion = new PilaHistorialReproduccion();       
-    private ColaReproduccionAleatoria ReproduccionAleatoria = new ColaReproduccionAleatoria();
+    // Conexión con las estructuras de datos del paquete 'modelo'.
+    private ListaReproduccion listaReproduccion = new ListaReproduccion(); //Lista doblemente enlazada (estructura principal).
+    private PilaHistorialReproduccion historialReproduccion = new PilaHistorialReproduccion(); //Pila LIFO.  
+    private ColaReproduccionAleatoria ReproduccionAleatoria = new ColaReproduccionAleatoria(); //Cola FIFO.
 
-    private MediaPlayer reproductor; 
-    private boolean reproduccionActiva = false; 
-    private boolean reproduccionAleatoria = false; 
-    private int repetirActivo = 0; // 0 = no activo, 1 = activo, 2 = activo para 1. 
+    private MediaPlayer reproductor; //Motor multimedia responsable de la reproducción de audio.
+
+    //Variables de estado que controlan el comportamiento del reproductor.
+    private boolean reproduccionActiva = false; //Reproducción activa
+    private boolean reproduccionAleatoria = false; //Reprodcción aleatoria
+    private int repetirActivo = 0; // Estados de repetición: 0 = no activo, 1 = activo, 2 = activo para 1. 
 
 
-    @Override
-    public void start(Stage ventanaPrincipal) {
-        RecursosVisuales();
+    @Override //Indicar redefinición del punto de entrada gráfico de JavaFX (start = método heredado).
+    public void start(Stage ventanaPrincipal) { //Stage; representa la ventana del sistema operativo.
+        RecursosVisuales(); //Precarga de activos visuales requeridos por la UI.
 
-        ListaPrueba();
+        ListaPrueba(); //Inicializar contenido de prueba para verificación funcional.
         
-        BorderPane interfazPrincipal = new BorderPane();
+        BorderPane interfazPrincipal = new BorderPane(); //Estructura base de la interfaz gráfica.
+        //Inicializar los paneles laterales que componen la interfaz principal.
         VBox panelLateralIzquierdo = inicializarPanelLateralIzquierdo();
         VBox panelLateralDerecho = inicializarPanelLateralDerecho(ventanaPrincipal);
 
+        //Región izquierda para controles y el centro para la lista de reproducción.
         interfazPrincipal.setLeft(panelLateralIzquierdo);
         interfazPrincipal.setCenter(panelLateralDerecho);
 
-        configurarInteractividadBotonesPrincipal();
+        configurarInteractividadBotonesPrincipal(); //Vincular la lógica a los botones creados.
 
-        Scene vistaPrincipal = new Scene(interfazPrincipal, 1000, 720); //(anch, alt)
+        Scene vistaPrincipal = new Scene(interfazPrincipal, 1000, 720); //Escena principal con dimensiones iniciales definidas (ancho, alto).
+        //Personalización visual de componentes nativos sin archivos CSS externos.
         String cssInterfaz = "data:text/css;base64," + java.util.Base64.getEncoder().encodeToString(
             (
                 ".slider .track { " +
@@ -133,17 +141,17 @@ public class Main extends Application { //Main hereda de la clase "Application" 
                 ".list-view .scroll-bar .decrement-arrow { -fx-padding: 0; -fx-shape: ' '; } "
             ).getBytes()
         );
-        vistaPrincipal.getStylesheets().add(cssInterfaz);
+        vistaPrincipal.getStylesheets().add(cssInterfaz); //Asociar los estilos visuales a la vista principal.
 
-        ventanaPrincipal.setTitle("Reproductor");
-        ventanaPrincipal.setScene(vistaPrincipal);
-        ventanaPrincipal.show();
+        ventanaPrincipal.setTitle("Reproductor"); //Definir el título de la ventana principal (setTitle).
+        ventanaPrincipal.setScene(vistaPrincipal); //Inseertar la escena dentro del contenedor principal.
+        ventanaPrincipal.show(); //Hacer visible la ventana al usuario (show).
 
-        sincronizar(false); 
+        sincronizar(false); //Sincronizar el estado visual inicial antes de la interacción del usuario.
     }
 
 
-    private void RecursosVisuales() {
+    private void RecursosVisuales() { //Inicializar y almacenar recursos necesarios para la interfaz gráfica.
         imgReproducir = establecerVisual("recursos_visuales/reproducir.png");
         imgPausar = establecerVisual("recursos_visuales/pausar.png");
         imgSiguiente = establecerVisual("recursos_visuales/siguiente.png");
@@ -159,27 +167,29 @@ public class Main extends Application { //Main hereda de la clase "Application" 
         imgDesplazarAbajo = establecerVisual("recursos_visuales/desplazar_abajo.png");
     }
 
-    private VBox inicializarPanelLateralIzquierdo() {
-        VBox panelVertical = new VBox();
+    private VBox inicializarPanelLateralIzquierdo() { //Inicializar la sección izquierda de la interfaz gráfica.
+        VBox panelVertical = new VBox(); //Panel base con disposición vertical de elementos (organiza los componentes de forma secuencial).
         panelVertical.setPrefWidth(500); 
         panelVertical.setPadding(new Insets(50)); 
         panelVertical.setAlignment(Pos.CENTER); 
         panelVertical.setStyle("-fx-background-color: #101010;"); 
 
-        double maxWidth = 400;
+        double maxWidth = 400; //Valor de referencia para mantener consistencia visual.
 
+        //Configuración visual del área de carátula del track.
         rectPortada.setWidth(maxWidth); 
         rectPortada.setHeight(maxWidth);
-        rectPortada.setArcWidth(25);  
+        rectPortada.setArcWidth(25); //Borde redondeado
         rectPortada.setArcHeight(25);
-        rectPortada.setFill(Color.rgb(40, 40, 40)); 
+        rectPortada.setFill(Color.rgb(40, 40, 40)); //Color base utilizado cuando no existe imagen asociada.
         
-        DropShadow sombraPortada = new DropShadow();
+        DropShadow sombraPortada = new DropShadow(); //Efecto de sombra para generar sensación de profundidad.
         sombraPortada.setColor(Color.rgb(0, 0, 0, 0.6));
         sombraPortada.setRadius(40);
         sombraPortada.setOffsetY(20);
         rectPortada.setEffect(sombraPortada);
 
+        //Contenedor de información textual del track.
         VBox informacion = new VBox(5);
         informacion.setAlignment(Pos.CENTER_LEFT);
         informacion.setPadding(new Insets(25, 0, 15, 0));
@@ -189,6 +199,7 @@ public class Main extends Application { //Main hereda de la clase "Application" 
         lblNombreArtista.setStyle("-fx-text-fill: #b3b3b3; -fx-font-size: 20px; -fx-font-weight: bold; -fx-font-family: 'Segoe UI';");
         informacion.getChildren().addAll(lblNombreTrack, lblNombreArtista);
 
+        //Panel de control del progreso de reproducción.
         VBox panelParcialReproduccion = new VBox(8);
         panelParcialReproduccion.setMaxWidth(maxWidth); 
         sldReproduccion.setStyle("-fx-control-inner-background: #444; -fx-accent: #b0b0b0; -fx-cursor: hand;");
