@@ -204,17 +204,18 @@ public class Main extends Application { //Main hereda de la clase "Application" 
         panelParcialReproduccion.setMaxWidth(maxWidth); 
         sldReproduccion.setStyle("-fx-control-inner-background: #444; -fx-accent: #b0b0b0; -fx-cursor: hand;");
         
-        HBox referenciaTiempo = new HBox();
+        HBox referenciaTiempo = new HBox(); //Contenedor horizontal para los indicadores de tiempo.
         referenciaTiempo.setPadding(new Insets(0, 5, 0, 5));
         String estiloReferenciaTiempo = "-fx-text-fill: #999; -fx-font-size: 12px; -fx-font-weight: bold; -fx-font-family: 'Segoe UI';";
         lblTiempoActual.setStyle(estiloReferenciaTiempo);
         lblTiempoRestante.setStyle(estiloReferenciaTiempo);
         
-        Region espaciadoReferenciaTiempo = new Region();
+        Region espaciadoReferenciaTiempo = new Region(); //Separador entre componentes.
         HBox.setHgrow(espaciadoReferenciaTiempo, Priority.ALWAYS);
         referenciaTiempo.getChildren().addAll(lblTiempoActual, espaciadoReferenciaTiempo, lblTiempoRestante);
         panelParcialReproduccion.getChildren().addAll(sldReproduccion, referenciaTiempo);
 
+        //Panel que agrupa los controles principales de reproducción.
         HBox panelParcialControles = new HBox();
         panelParcialControles.setAlignment(Pos.CENTER);
         panelParcialControles.setSpacing(25); 
@@ -230,6 +231,7 @@ public class Main extends Application { //Main hereda de la clase "Application" 
 
         panelParcialControles.getChildren().addAll(btnModoAleatorio, btnAnterior, btnReproducirPausar, btnSiguiente, btnModoRepetir);
 
+        //Panel para ajuste de volumen de reproducción.
         HBox panelParcialVolumen = new HBox(15);
         panelParcialVolumen.setAlignment(Pos.CENTER); 
         panelParcialVolumen.setMaxWidth(maxWidth);
@@ -245,57 +247,66 @@ public class Main extends Application { //Main hereda de la clase "Application" 
 
         panelParcialVolumen.getChildren().addAll(recursoVolumen, sldVolumen);
 
+        //Construcción final del panel lateral izquierdo.
         panelVertical.getChildren().addAll(rectPortada, informacion, panelParcialReproduccion, panelParcialControles, panelParcialVolumen);
         
         return panelVertical;
     }
 
-    private VBox inicializarPanelLateralDerecho(Stage ventanaPrincipal) {
-        VBox panelVertical = new VBox();
+    private VBox inicializarPanelLateralDerecho(Stage ventanaPrincipal) { //Inicializar la sección derecha de la interfaz gráfica.
+        VBox panelVertical = new VBox(); //Contenedor vertical que agrupa todos los componentes del panel derecho.
         panelVertical.setStyle("-fx-background-color: #000000;"); 
         panelVertical.setPadding(new Insets(30));
         panelVertical.setSpacing(15);
 
+        //Sección superior con etiqueta descriptiva y botón de acción.
         HBox panelSuperior = new HBox(15);
         panelSuperior.setAlignment(Pos.CENTER_LEFT);
-        Label lblTextoSuperior = new Label("Seguir reproduciendo");
+        Label lblTextoSuperior = new Label("Seguir reproduciendo"); //Título visible del listado de pistas.
         lblTextoSuperior.setStyle("-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold; -fx-font-family: 'Segoe UI';");
         Region espacioPanelSuperior = new Region();
-        HBox.setHgrow(espacioPanelSuperior, Priority.ALWAYS);
+        HBox.setHgrow(espacioPanelSuperior, Priority.ALWAYS); //Espaciador flexible que desplaza el botón hacia el extremo derecho.
 
         btnImportarCarpeta = establecerVisualBoton(imgImportarCarpeta, 18, 40);
         btnImportarCarpeta.setStyle("-fx-background-color: #101010; -fx-cursor: hand; -fx-padding: 8; -fx-background-radius: 10;"); 
-        btnImportarCarpeta.setOnAction(accion -> importarCarpeta(ventanaPrincipal));
+        //Operador lambda (->); expresar comportamiento sin crear clases adicionales.
+        btnImportarCarpeta.setOnAction(accion -> importarCarpeta(ventanaPrincipal)); //Control para invocar el selector de directorios del sistema operativo.
 
         panelSuperior.getChildren().addAll(lblTextoSuperior, espacioPanelSuperior, btnImportarCarpeta);
 
+        //Lista visual que representa la colección de pistas cargadas.
         listaReproduccionVisual.setStyle("-fx-background-color: transparent; -fx-control-inner-background: #000000;");
-        VBox.setVgrow(listaReproduccionVisual, Priority.ALWAYS);
+        VBox.setVgrow(listaReproduccionVisual, Priority.ALWAYS); //Permitir que la lista se expanda verticalmente y ocupe el espacio disponible.
         
+        //CellFactory; redefine la representación visual de cada pista.
         listaReproduccionVisual.setCellFactory(parametro -> new ListCell<Track>() {
             @Override
-            protected void updateItem(Track trackEnFila, boolean estaVacio) {
+            protected void updateItem(Track trackEnFila, boolean estaVacio) { //Actualizar la representación visual de la fila según su estado.
                 super.updateItem(trackEnFila, estaVacio);
+                //Restablecer el estado gráfico antes de renderizar nuevos datos.
                 setText(null);
                 setGraphic(null);
                 setStyle("-fx-background-color: transparent;"); 
 
-                if (estaVacio || trackEnFila == null) {
+                if (estaVacio || trackEnFila == null) { //Si la celda no tiene datos, no se renderiza nada.
 
-                } else {
+                } else { //Inicializar la estructura gráfica de una pista individual.
                     HBox panelFilaVisual = new HBox(15);
                     panelFilaVisual.setAlignment(Pos.CENTER_LEFT);
                     
                     panelFilaVisual.styleProperty().bind(
+                        //Enlace dinámico para reflejar selección.
                         Bindings.when(selectedProperty()).then("-fx-background-color: #101010; -fx-background-radius: 12px; -fx-padding: 8 20 8 20;").otherwise("-fx-background-color: transparent; -fx-padding: 8 20 8 20;")
                     );
 
-                    Label lblNumeroTrack = new Label(String.valueOf(getIndex() + 1));
+                    Label lblNumeroTrack = new Label(String.valueOf(getIndex() + 1)); //Numeración calculada a partir del índice del ListView (+1).
                     lblNumeroTrack.textFillProperty().bind(
+                        //Enlace de color dependiente de la selección.
                         Bindings.when(selectedProperty()).then(Color.WHITE).otherwise(Color.web("#666"))
                     );
                     lblNumeroTrack.setStyle("-fx-font-size: 14px; -fx-min-width: 25px; -fx-font-weight: bold;");
 
+                    //Sección informativa del track.
                     VBox informacion = new VBox(4);
                     Label lblNombreTrack = new Label(trackEnFila.getNombreTrack());
                     lblNombreTrack.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;");
@@ -304,28 +315,33 @@ public class Main extends Application { //Main hereda de la clase "Application" 
                     
                     informacion.getChildren().addAll(lblNombreTrack, lblNombreArtista);
 
+                    //Distribuir el espacio sobrante dentro de la fila.
                     Region espacioFilaVisual = new Region();
                     HBox.setHgrow(espacioFilaVisual, Priority.ALWAYS);
+                    //Indicador visual de opciones adicionales.
                     Label lblReferenciaOpciones = new Label("•••"); 
                     lblReferenciaOpciones.setStyle("-fx-text-fill: #666; -fx-font-size: 14px; -fx-cursor: hand;");
 
                     panelFilaVisual.getChildren().addAll(lblNumeroTrack, informacion, espacioFilaVisual, lblReferenciaOpciones);
                     
-                    setGraphic(panelFilaVisual);
+                    setGraphic(panelFilaVisual); //Establecer como el contenido visual de la celda.
                 }
             }
         });
 
+        //Sección inferior con controles para reordenar el listado.
         HBox panelInferior = new HBox(5);
         panelInferior.setMaxWidth(Double.MAX_VALUE); 
         panelInferior.setAlignment(Pos.CENTER_RIGHT);
         panelInferior.setPadding(new Insets(0, 0, 0, 0));
 
+        //Controles de reorganización del listado.
         btnDesplazarArriba = establecerVisualBoton(imgDesplazarArriba, 22, 45);
         btnDesplazarAbajo = establecerVisualBoton(imgDesplazarAbajo, 22, 45);
         Label lblReferenciaOrden = new Label("Reordenar:");
         lblReferenciaOrden.setStyle("-fx-text-fill: #666; -fx-font-size: 14px; -fx-font-weight: bold;");
         
+        //Agrega todos los componentes al panel lateral derecho.
         panelInferior.getChildren().addAll(lblReferenciaOrden, btnDesplazarArriba, btnDesplazarAbajo);
         panelVertical.getChildren().addAll(panelSuperior, listaReproduccionVisual, panelInferior);
 
@@ -333,77 +349,82 @@ public class Main extends Application { //Main hereda de la clase "Application" 
     }
 
 
-    private void configurarInteractividadBotonesPrincipal() {
+    private void configurarInteractividadBotonesPrincipal() { //Asociar la lógica de control del reproductor a los botones principales de la interfaz.
+        //setOnAction; registra una acción que se ejecuta cuando el usuario interactúa con el botón.
+        //Lambda (->); define de forma concisa el comportamiento a ejecutar cuando ocurre el evento.
         btnReproducirPausar.setOnAction(accion -> {
-            if (reproductor == null) {
+            if (reproductor == null) { //Prevenir errores al intentar reproducir sin un medio cargado.
                 return;
             }
 
-            if (reproduccionActiva) {
-                reproductor.pause();
-                reproduccionActiva = false;
+            if (reproduccionActiva) { //Si estado activo de reproductor.
+                reproductor.pause(); //Detener reproducción
+                reproduccionActiva = false; //Actualizar estado.
 
             } else {
-                reproductor.play();
-                reproduccionActiva = true;
+                reproductor.play(); //Reanudar o iniciar la reproducción.
+                reproduccionActiva = true; //Actualizar estado.
             }
 
-            actualizarReproducirPausar();
+            actualizarReproducirPausar(); //Alternar la referencia del estado de reproducción entre activo y pausado.
         });
 
         btnModoAleatorio.setOnAction(accion -> {
-            reproduccionAleatoria = !reproduccionAleatoria; 
+            reproduccionAleatoria = !reproduccionAleatoria; //Invertir el valor (estado).
             
-            if (reproduccionAleatoria) {
+            if (reproduccionAleatoria) { //Si está activo cambiar el estado visual.
                 actualizarVisualBoton(btnModoAleatorio, imgModoAleatorioOn);
                 
+                //Bloquear reordenamiento manual.
                 btnDesplazarArriba.setDisable(true);
                 btnDesplazarAbajo.setDisable(true);
 
                 Track trackActual = null;
                 if (listaReproduccion.getActual() != null) {
-                    trackActual = listaReproduccion.getActual().getTrack();
+                    trackActual = listaReproduccion.getActual().getTrack(); //Obtener track y guardarlo en variable.
                 }
 
-                ArrayList<Track> listaReproduccionAleatoria = new ArrayList<>();
+                ArrayList<Track> listaReproduccionAleatoria = new ArrayList<>(); //Crear lista temporal.
                 NodoTrack actual = listaReproduccion.getInicio();
-                while(actual != null) { 
-                    listaReproduccionAleatoria.add(actual.getTrack()); 
+                while(actual != null) { //Recorrer lista enlazada.
+                    listaReproduccionAleatoria.add(actual.getTrack()); //Copiar canción.
                     actual = actual.getSiguiente(); 
                 }
 
-                Collections.shuffle(listaReproduccionAleatoria);
+                Collections.shuffle(listaReproduccionAleatoria); //Aplicar el algoritmo de mezcla (Fisher-Yates internamente).
 
-                if (trackActual != null) {
-                    int posicion = listaReproduccionAleatoria.indexOf(trackActual);
-                    if (posicion != -1) {
+                if (trackActual != null) { //Si hay track activo.
+                    int posicion = listaReproduccionAleatoria.indexOf(trackActual); //Buscar posición tras la mezcla (indexOf devuelve -1 si el elemento no existe en la lista).
+                    if (posicion != -1) { //Intercambia posiciones (índice 0)
                         Collections.swap(listaReproduccionAleatoria, 0, posicion);
                     }
                 }
 
-                listaReproduccionVisual.getItems().setAll(listaReproduccionAleatoria);
+                listaReproduccionVisual.getItems().setAll(listaReproduccionAleatoria); //Actualizar visual de la lista con nuevo orden.
 
-                establecerColaReproduccionAleatoria(listaReproduccionAleatoria);
+                establecerColaReproduccionAleatoria(listaReproduccionAleatoria); //Llenar la estructura.
 
-                if (!ReproduccionAleatoria.estaVacia()) {
+                if (!ReproduccionAleatoria.estaVacia()) { //Si tiene elementos eliminar el primero (porque está en reproducción).
                     ReproduccionAleatoria.remover();
                 }
 
                 listaReproduccionVisual.getSelectionModel().select(0);
-                listaReproduccionVisual.scrollTo(0);
+                listaReproduccionVisual.scrollTo(0); //Ajustar el visual de selección.
 
             } else {
-                actualizarVisualBoton(btnModoAleatorio, imgModoAleatorioOff);
+                actualizarVisualBoton(btnModoAleatorio, imgModoAleatorioOff); //Actualizar visual.
+                //Rehabilitar controles manuales.
                 btnDesplazarArriba.setDisable(false);
                 btnDesplazarAbajo.setDisable(false);
+                //Reconstruye la lista desde la lista enlazada original (vuelve a la lista original).
                 actualizarListaReproduccionVisual(); 
                 
-                if (listaReproduccion.getActual() != null) {
-                    Track trackActual = listaReproduccion.getActual().getTrack();
+                if (listaReproduccion.getActual() != null) { //Si hay un track en reproducción.
+                    Track trackActual = listaReproduccion.getActual().getTrack(); //Extraer objeto
                     
-                    listaReproduccionVisual.getSelectionModel().select(trackActual);
+                    listaReproduccionVisual.getSelectionModel().select(trackActual); //Resaltar visualmente (no altera reproducción).
                     
-                    listaReproduccionVisual.scrollTo(trackActual);
+                    listaReproduccionVisual.scrollTo(trackActual); //Redirigir visualmente hasta el track.
                 }
             }
         });
