@@ -1,47 +1,50 @@
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.io.File; //Acceso y manipulación de archivos del sistema.
+import java.util.ArrayList; //Lista redimensionable para la administración temporal de datos.
+import java.util.Collections; //Funciones auxiliares para manipulación de estructuras de datos.
 
-import javafx.application.Application;
-import javafx.beans.binding.Bindings;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Slider;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
-import javafx.util.Duration;
+import javafx.application.Application; //Punto central de inicialización y cierre de la aplicación JavaFX.
+import javafx.beans.binding.Bindings; //Permite sincronizar valores de forma automática.
+import javafx.geometry.Insets; //Define márgenes y espaciados (padding).
+import javafx.geometry.Pos; //Define posición relativa dentro de contenedores.
+import javafx.scene.Scene; //Contenedor principal de la interfaz gráfica.
+import javafx.scene.control.Button; //Elemento de interacción básica.
+import javafx.scene.control.Label; //Etiqueta para mostrar texto no editable.
+import javafx.scene.control.ListCell; //Define la representación visual de un elemento de lista.
+import javafx.scene.control.ListView; //Lista interactiva con soporte de selección.
+import javafx.scene.control.Slider; //Elemento para control (selector gráfico de rango).
+import javafx.scene.effect.DropShadow; //Efecto visual de sombra paralela.
+import javafx.scene.image.Image; //Representación de una imagen en memoria.
+import javafx.scene.image.ImageView; //Visualizador gráfico de Image.
+import javafx.scene.layout.BorderPane; //Distribución en zonas principales (arriba, abajo, centro, izquierda, derecha).
+import javafx.scene.layout.HBox; //Contenedor de disposición horizontal.
+import javafx.scene.layout.Priority; //Define crecimiento relativo.
+import javafx.scene.layout.Region; //Elemento base para controles visuales.
+import javafx.scene.layout.VBox; //Contenedor de disposición vertical.
+import javafx.scene.media.Media; //Recurso multimedia (archivo de audio).
+import javafx.scene.media.MediaPlayer; //Controlador de reproducción multimedia (play/pause).
+import javafx.scene.paint.Color; //Definición cromática de la interfaz.
+import javafx.scene.paint.ImagePattern; //Permite usar una imagen como relleno de figuras.
+import javafx.scene.shape.Rectangle; //Figura geométrica rectangular.
+import javafx.stage.DirectoryChooser; //Acceso visual al sistema de archivos.
+import javafx.stage.Stage; //Ventana principal de la aplicación.
+import javafx.util.Duration; //Representación de tiempo (segundos/milisegundos).
 
-import modelo.*; 
+import modelo.*; //Acceso a la capa lógica del sistema.
 
 
-public class Main extends Application {
+public class Main extends Application { //Main hereda de la clase "Application" de JavaFX sus métodos y comportamiento (de lo contrario JavaFX no reconocería la clase como una aplicación válida).
+    //Etiquetas (labels) informativas para mostrar datos del track y tiempos de reproducción.
     private Label lblNombreTrack = new Label("No especificado");
     private Label lblNombreArtista = new Label("No especificado");
     private Label lblTiempoActual = new Label("0:00");
     private Label lblTiempoRestante = new Label("-0:00"); 
     
+    //Controles deslizantes (sliders) para la interacción con el progreso y el volumen.
     private Slider sldReproduccion = new Slider();
-    private Slider sldVolumen = new Slider(0, 100, 50); //(min, max, ini).
+    private Slider sldVolumen = new Slider(0, 100, 50); //Configuración inicial (min, max, valor actual).
 
-    private Rectangle rectPortada = new Rectangle(300, 300); //(anch, alt).
+    //Contenedores visuales para la carátula y la lista de canciones.
+    private Rectangle rectPortada = new Rectangle(300, 300); //Configuración inicial (anch, alt).
     private ListView<Track> listaReproduccionVisual = new ListView <>();
 
     private Button btnReproducirPausar, btnAnterior, btnSiguiente; 
