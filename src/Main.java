@@ -581,22 +581,22 @@ public class Main extends Application { //Main hereda de la clase "Application" 
                 reproductor = new MediaPlayer(media); //Crear un nuevo reproductor.
                 reproductor.setVolume(sldVolumen.getValue() / 100.0); //Aplicar el volumen definido.
 
-                reproductor.setOnReady(() -> { // Configura el slider según la duración real del track.
-                    double TiempoTotalTrack = reproductor.getTotalDuration().toSeconds();
+                reproductor.setOnReady(() -> { //OnReady; evento del MediaPlayer que se ejecuta una sola vez, cuando el audio ya terminó de cargarse en memoria y está listo para reproducirse.
+                    double TiempoTotalTrack = reproductor.getTotalDuration().toSeconds(); //Configura el slider según el tiempo.
                     sldReproduccion.setMax(TiempoTotalTrack);
                 });
 
-                reproductor.currentTimeProperty().addListener((propiedad, tiempoAnterior, tiempoActual) -> {
-                    if (!sldReproduccion.isValueChanging()) { 
-                        double parcial = tiempoActual.toSeconds();
-                        double total = reproductor.getTotalDuration().toSeconds();
-                        sldReproduccion.setValue(parcial);
-                        lblTiempoActual.setText(transformarTiempoReproduccion(parcial));
-                        lblTiempoRestante.setText("-" + transformarTiempoReproduccion(total - parcial));
+                reproductor.currentTimeProperty().addListener((propiedad, tiempoAnterior, tiempoActual) -> { //currentTimeProperty(); representar el tiempo actual de reproducción del audio. addListener(); ejecutar cada vez que cambie.
+                    if (!sldReproduccion.isValueChanging()) { //isValueChanging(); devolver True si se está arrastrando el slider.
+                        double parcial = tiempoActual.toSeconds(); //Tiempo actual.
+                        double total = reproductor.getTotalDuration().toSeconds(); //Tiempo total.
+                        sldReproduccion.setValue(parcial); //Mover slider a valor actual.
+                        lblTiempoActual.setText(transformarTiempoReproduccion(parcial)); //Convertir y mostar tiempo actual
+                        lblTiempoRestante.setText("-" + transformarTiempoReproduccion(total - parcial)); //Convertir, resta el tiempo reproducido al total y mostrar.
                     }
                 });
 
-                reproductor.setOnEndOfMedia(() -> btnSiguiente.fire());
+                reproductor.setOnEndOfMedia(() -> btnSiguiente.fire());//Cuando track termina, fire() actúa como si se hubiera hecho clic en el botón siguiente.
 
                 if (reproduccionAutomatica) { 
                     reproductor.play(); 
