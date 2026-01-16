@@ -686,19 +686,19 @@ public class Main extends Application { //Main hereda de la clase "Application" 
     }
 
     private void actualizarReproducirPausar() {
-        if (reproduccionActiva) {
-            actualizarVisualBoton(btnReproducirPausar, imgPausar);
+        if (reproduccionActiva) { //Si existe reproducción.
+            actualizarVisualBoton(btnReproducirPausar, imgPausar); //Actualizar a pausar.
         } else { 
-            actualizarVisualBoton(btnReproducirPausar, imgReproducir);
+            actualizarVisualBoton(btnReproducirPausar, imgReproducir); //Actualizar a reproducir.
         }
     }
 
     private Image establecerVisual(String recurso) {
         try {
-            File archivo = new File(recurso);
+            File archivo = new File(recurso); //Representar ruta del sistema
             if(archivo.exists()) {
-                return new Image(archivo.toURI().toString());
-            } else {
+                return new Image(archivo.toURI().toString()); //toURI(); convertir el archivo en una URL válida. toString(); convertir a texto.
+            } else { //Si no existe
             return null; 
             }
 
@@ -708,19 +708,19 @@ public class Main extends Application { //Main hereda de la clase "Application" 
     }
 
     private Button establecerVisualBoton(Image recursoVisual, int alto, int ancho) {
-        ImageView recursoBoton = new ImageView(recursoVisual);
-        recursoBoton.setFitHeight(alto);
-        recursoBoton.setPreserveRatio(true);
-        if (recursoVisual == null) { 
+        ImageView recursoBoton = new ImageView(recursoVisual); //Contenedor gráfico para mostrar la imagen del botón.
+        recursoBoton.setFitHeight(alto); //Ajustar la altura.
+        recursoBoton.setPreserveRatio(true); //Mantener la proporción original.
+        if (recursoVisual == null) {  //Si no está disponible ocupar espacio reservado.
             recursoBoton.setFitWidth(alto); recursoBoton.setOpacity(0); 
         }
 
-        Button boton = new Button();
-        boton.setGraphic(recursoBoton);
-        boton.setStyle("-fx-background-color: transparent; -fx-cursor: hand; -fx-padding: 0;");
-        boton.setAlignment(Pos.CENTER); 
+        Button boton = new Button(); //Crear botón.
+        boton.setGraphic(recursoBoton); //Insertar recurso visual.
+        boton.setStyle("-fx-background-color: transparent; -fx-cursor: hand; -fx-padding: 0;"); //Estilo
+        boton.setAlignment(Pos.CENTER); //Centrar
 
-        if (ancho > 0) {
+        if (ancho > 0) { //Forzar un ancho fijo (visual).
             boton.setMinWidth(ancho);
             boton.setPrefWidth(ancho);
             boton.setMaxWidth(ancho);
@@ -729,8 +729,8 @@ public class Main extends Application { //Main hereda de la clase "Application" 
     }
 
     private void actualizarVisualBoton(Button boton, Image actualizarVisual) {
-        if (boton.getGraphic() instanceof ImageView) {
-            ((ImageView) boton.getGraphic()).setImage(actualizarVisual);
+        if (boton.getGraphic() instanceof ImageView) { //getGraphic(); devolver el contenido visual del botón (tipo Node). instanceof; verificar que sea ImageView.
+            ((ImageView) boton.getGraphic()).setImage(actualizarVisual); //Convertir y cambiar a imagen.
         }
     }
 
