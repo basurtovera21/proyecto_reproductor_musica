@@ -473,7 +473,7 @@ public class Main extends Application { //Main hereda de la clase "Application" 
 
         listaReproduccionVisual.setOnMouseClicked(accion -> { //setOnMouseClicked; detectar clics del mouse.
             if (accion.getClickCount() == 2) { //getClickCount(); retorna número de clics consecutivos.
-                Track trackSeleccionado = listaReproduccionVisual.getSelectionModel().getSelectedItem(); //getSelectionModel; devolver el objeto encargado de administrar la selección del componente. getSelectedItem(); devlver el objeto actualmente seleccionado dentro del componente.
+                Track trackSeleccionado = listaReproduccionVisual.getSelectionModel().getSelectedItem(); //getSelectionModel; devolver el objeto encargado de administrar la selección del componente. getSelectedItem(); devolver el objeto actualmente seleccionado dentro del componente.
                 
                 if (trackSeleccionado != null) { //Si existe realmente una selección
                     NodoTrack seleccionado = buscarNodoTrack(trackSeleccionado); //Buscar el nodo que contiene al Track.
@@ -622,18 +622,21 @@ public class Main extends Application { //Main hereda de la clase "Application" 
 
 
     private void establecerColaReproduccionAleatoria(ArrayList<Track> listaReproduccionAleatoria) {
-        ReproduccionAleatoria = new ColaReproduccionAleatoria(); 
+        ReproduccionAleatoria = new ColaReproduccionAleatoria(); //Reinciar cola (descartar otra anterior).
 
-        for (Track trackActual : listaReproduccionAleatoria) {
+        for (Track trackActual : listaReproduccionAleatoria) { //Devolver orden visual acutal.
             ReproduccionAleatoria.incorporar(trackActual);
         }
     }
 
     private void desplazarTrackEnLista(int direccion) {
-        Track trackSeleccionado = listaReproduccionVisual.getSelectionModel().getSelectedItem();
-        if (trackSeleccionado == null) return;
+        Track trackSeleccionado = listaReproduccionVisual.getSelectionModel().getSelectedItem(); //getSelectionModel; devolver el objeto encargado de administrar la selección del componente. getSelectedItem(); devolver el objeto actualmente seleccionado dentro del componente.
+        if (trackSeleccionado == null) { //Si no hay selección.
+            return;
+        }
+
         NodoTrack seleccionado = buscarNodoTrack(trackSeleccionado);
-        if (seleccionado != null) {
+        if (seleccionado != null) { //Si nodo seleccionado existe.
             if (direccion == -1) {
                 listaReproduccion.desplazarArriba(seleccionado);
             }
@@ -643,17 +646,17 @@ public class Main extends Application { //Main hereda de la clase "Application" 
             }
 
             actualizarListaReproduccionVisual();
-            listaReproduccionVisual.getSelectionModel().select(trackSeleccionado);
+            listaReproduccionVisual.getSelectionModel().select(trackSeleccionado); //Mantener selección.
         }
     }
 
     private void importarCarpeta(Stage ventanaPrincipal) {
-        DirectoryChooser selectorCarpeta = new DirectoryChooser();
-        File carpeta = selectorCarpeta.showDialog(ventanaPrincipal);
-        if (carpeta != null) {
-            File[] listaArchivo = carpeta.listFiles((carpetaArchivo, nombreArchivo) -> nombreArchivo.toLowerCase().endsWith(".mp3"));
-            if (listaArchivo != null) {
-                for (File archivo : listaArchivo) {
+        DirectoryChooser selectorCarpeta = new DirectoryChooser(); //DirectoryChooser; permite navegar por carpetas del sistema.
+        File carpeta = selectorCarpeta.showDialog(ventanaPrincipal); //Abrir ventana
+        if (carpeta != null) { //Si se eligió carpeta.
+            File[] listaArchivo = carpeta.listFiles((carpetaArchivo, nombreArchivo) -> nombreArchivo.toLowerCase().endsWith(".mp3")); //Devolver arreglos con filtros.
+            if (listaArchivo != null) { //Si no existen errores.
+                for (File archivo : listaArchivo) { //Recorrer archivos
                     listaReproduccion.incorporarFinal(new Track(archivo.getName().replace(".mp3",""), "No especificado", archivo.getAbsolutePath(), null));
                 }
                 actualizarListaReproduccionVisual();
@@ -663,22 +666,22 @@ public class Main extends Application { //Main hereda de la clase "Application" 
 
 
     private NodoTrack buscarNodoTrack(Track trackSeleccionado) {
-        NodoTrack actual = listaReproduccion.getInicio();
-        while (actual != null) { 
-            if (actual.getTrack() == trackSeleccionado) {
+        NodoTrack actual = listaReproduccion.getInicio(); //Obtener nodo inicial.
+        while (actual != null) { //Recorrer hasta el final.
+            if (actual.getTrack() == trackSeleccionado) { //Si es el seleccionado.
                 return actual; 
             } 
-            actual = actual.getSiguiente();
+            actual = actual.getSiguiente(); //Avanzar.
         }
         return null;
     }
     
     private void actualizarListaReproduccionVisual() {
-        listaReproduccionVisual.getItems().clear();
-        NodoTrack actual = listaReproduccion.getInicio();
-        while (actual != null) {
-            listaReproduccionVisual.getItems().add(actual.getTrack());
-            actual = actual.getSiguiente();
+        listaReproduccionVisual.getItems().clear(); //Eliminar elementos previso.
+        NodoTrack actual = listaReproduccion.getInicio(); //Obtener nodo inicial.
+        while (actual != null) { //Recorrer hasta el final.
+            listaReproduccionVisual.getItems().add(actual.getTrack()); //Agregar (add) track a la interfaz de la lista.
+            actual = actual.getSiguiente(); //Avanzar.
         }
     }
 
