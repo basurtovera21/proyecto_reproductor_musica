@@ -11,11 +11,11 @@ public class ColaReproduccionAleatoria {
         this.colaReproduccionAleatoria = new LinkedList <>();
     }
 
-    public void incorporar(Track track) { //Inserta el track (add) dentro de la cola.
+    public void incorporar(Track track) { //Insertar el track (add) dentro de la cola.
         colaReproduccionAleatoria.add(track);
     }
 
-    public Track remover() { //Recupera y elimina (pop) el primer elemento de la cola.
+    public Track remover() { //Recuperar y eliminar (pop) el primer elemento de la cola.
         return colaReproduccionAleatoria.poll();
     }
 

@@ -1,7 +1,7 @@
 //1. Representación de pista de audio.
 package modelo;
 
-public class Track { //Constructor
+public class Track { //Constructor.
     //private; protege la integirdad del dato; no puede ser modificado directamente desde otra clase.
     private String nombreTrack;
     private String nombreArtista;
@@ -11,13 +11,13 @@ public class Track { //Constructor
     public Track(String nombreTrack, String nombreArtista, String rutaAudio, String rutaPortada) { //public; permite crear instancias (objetos) de esta clase desde el controlador principal.
         this.rutaAudio = rutaAudio;
         
-        if (rutaPortada == null) { //Evita referencias nulas en portada; asigna una cadena vacía.
+        if (rutaPortada == null) { //Evitar referencias nulas en portada; asignar una cadena vacía.
             this.rutaPortada = ""; 
         } else {
             this.rutaPortada = rutaPortada;
         }
 
-        if (nombreTrack == null || nombreTrack.isEmpty()) { //Si no existe nombre registrado, usa la ruta del archivo como identificador provisional.
+        if (nombreTrack == null || nombreTrack.isEmpty()) { //Si no existe nombre registrado, usar la ruta del archivo como identificador provisional.
             this.nombreTrack = rutaAudio;
         } else {
             this.nombreTrack = nombreTrack;

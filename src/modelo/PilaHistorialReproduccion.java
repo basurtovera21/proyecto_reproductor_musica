@@ -1,7 +1,7 @@
 //4. Estructura: LIFO (Last In, First Out); administración del historial de reproducción.
 package modelo;
 
-import java.util.Stack; //Importación de la estructura "Stack"
+import java.util.Stack; //Importación de la estructura "Stack".
 
 public class PilaHistorialReproduccion {
     private Stack<Track> pilaHistorialReproduccion; //Declaración de la estructura.

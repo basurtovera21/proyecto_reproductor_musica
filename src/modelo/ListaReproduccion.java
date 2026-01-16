@@ -13,14 +13,14 @@ public class ListaReproduccion {
         this.actual = null;
     }
 
-    public void incorporarFinal(Track track) { //Inserción al final. Crea un nuevo nodo y reajusta los enlaces.
+    public void incorporarFinal(Track track) { //Inserción al final. Crear un nuevo nodo y reajustar los enlaces.
         NodoTrack nuevo = new NodoTrack(track);
 
         if (inicio == null) { //Lista vacía; el nuevo nodo es el único elemento (inicio, fin y actual).
             inicio = nuevo; 
             fin = nuevo;
             actual = nuevo;
-        } else { // Lista con elementos; se enlaza el nuevo nodo después del actual 'fin' y se actualiza el puntero 'fin'.
+        } else { //Lista con elementos; se enlaza el nuevo nodo después del actual 'fin' y se actualiza el puntero 'fin'.
             fin.setSiguiente(nuevo); //Referencia del nodo final al nuevo nodo.
             nuevo.setAnterior(fin); //Nuevo nodo establece referencia hacia el anterior nodo final.
             fin = nuevo; //Actualización al nuevo nodo final.
@@ -35,12 +35,12 @@ public class ListaReproduccion {
         this.actual = actual;
     }
     
-    public NodoTrack getInicio() { //Permite al controlador iniciar recorridos desde el principio de la lista.
+    public NodoTrack getInicio() { //Permitir al controlador iniciar recorridos desde el principio de la lista.
         return inicio;
     }
 
-    public void desplazarArriba(NodoTrack nodoActivo) { //Permite modificar el orden de reproducción desplazando el elemento activo hacia arriba.
-        if (nodoActivo == null || nodoActivo == inicio) { // No es posible desplazar si el nodo es el primero de la lista (o si no ha sido seleccionado).
+    public void desplazarArriba(NodoTrack nodoActivo) { //Permitir modificar el orden de reproducción desplazando el elemento activo hacia arriba.
+        if (nodoActivo == null || nodoActivo == inicio) { //No es posible desplazar si el nodo es el primero de la lista (o si no ha sido seleccionado).
             return;
         }
 
@@ -48,21 +48,21 @@ public class ListaReproduccion {
         Track trackAnterior = nodoAnterior.getTrack(); //Variable que contiene track a bajar.
         Track trackActivo = nodoActivo.getTrack(); //Variable que contiene track a subir.
         nodoAnterior.setTrack(trackActivo); //Nodo arriba; track que estaba abajo. 
-        nodoActivo.setTrack(trackAnterior); //Nodo abajo; track que estaba arriba
+        nodoActivo.setTrack(trackAnterior); //Nodo abajo; track que estaba arriba.
 
         if (actual == nodoActivo) { //Track en reproducción; apunta al track desplazado.
             actual = nodoAnterior; 
         }
     }
 
-    public void desplazarAbajo(NodoTrack nodoActivo) { //Permite modificar el orden de reproducción desplazando el elemento activo hacia abajo.
-        if (nodoActivo == null || nodoActivo == fin) { // No es posible desplazar si el nodo es el último de la lista (o si no ha sido seleccionado).
+    public void desplazarAbajo(NodoTrack nodoActivo) { //Permitir modificar el orden de reproducción desplazando el elemento activo hacia abajo.
+        if (nodoActivo == null || nodoActivo == fin) { //No es posible desplazar si el nodo es el último de la lista (o si no ha sido seleccionado).
             return;
         }
 
-        NodoTrack nodoSiguiente = nodoActivo.getSiguiente(); // Identificar nodo siguiente (abajo).
-        Track trackSiguiente = nodoSiguiente.getTrack(); // Variable que contiene track a subir.
-        Track trackActivo = nodoActivo.getTrack(); // Variable que contiene track a bajar.
+        NodoTrack nodoSiguiente = nodoActivo.getSiguiente(); //Identificar nodo siguiente (abajo).
+        Track trackSiguiente = nodoSiguiente.getTrack(); //Variable que contiene track a subir.
+        Track trackActivo = nodoActivo.getTrack(); //Variable que contiene track a bajar.
         nodoSiguiente.setTrack(trackActivo); //Nodo abajo; track que estaba arriba.
         nodoActivo.setTrack(trackSiguiente); //Nodo arriba; track que estaba abajo.
 
