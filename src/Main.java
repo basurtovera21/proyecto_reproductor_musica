@@ -429,56 +429,57 @@ public class Main extends Application { //Main hereda de la clase "Application" 
             }
         });
 
-        btnModoRepetir.setOnAction(accion -> {
-            repetirActivo++;
+        btnModoRepetir.setOnAction(accion -> { 
+            repetirActivo++; //Incrementar el estado actual.
             if (repetirActivo > 2) {
-                repetirActivo = 0;
+                repetirActivo = 0; //Reiniciar el ciclo de estados al superar el valor máximo permitido.
             }
 
-            switch (repetirActivo) {
+            switch (repetirActivo) { //Evaluar el estado actual para definir el comportamiento y el icono del botón.
                 case 0: 
-                    actualizarVisualBoton(btnModoRepetir, imgModoRepetirOff); 
+                    actualizarVisualBoton(btnModoRepetir, imgModoRepetirOff); //No activo. 
                     break;
                 case 1: 
-                    actualizarVisualBoton(btnModoRepetir, imgModoRepetirOn); 
+                    actualizarVisualBoton(btnModoRepetir, imgModoRepetirOn); //Activo. 
                     break;
                 case 2: 
-                    actualizarVisualBoton(btnModoRepetir, imgimgModoRepetirUno); 
+                    actualizarVisualBoton(btnModoRepetir, imgimgModoRepetirUno); //Activo para 1.
                     break;
             }
         });
 
-        btnSiguiente.setOnAction(accion -> cambiarTrack(1));
-        btnAnterior.setOnAction(accion -> cambiarTrack(-1));
+        btnSiguiente.setOnAction(accion -> cambiarTrack(1)); //Siguiente.
+        btnAnterior.setOnAction(accion -> cambiarTrack(-1)); //Anterior.
 
-        configurarInteractividadBoton();
+        configurarInteractividadBoton(); //Configuración final de interacciones adicionales de la interfaz.
     }
 
-    private void configurarInteractividadBoton() {
-        sldReproduccion.setOnMouseReleased(accion -> {
-            if (reproductor != null) {
-                reproductor.seek(Duration.seconds(sldReproduccion.getValue()));
+    private void configurarInteractividadBoton() { //Asociar la lógica de control del reproductor a los botones secundarios de la interfaz.
+        sldReproduccion.setOnMouseReleased(accion -> { //setOnMouseRelesed; ejecuta la acción solo cuando se suelta el mouse (sobre el slider).
+            if (reproductor != null) { //Si el reproductor está inicializado.
+                reproductor.seek(Duration.seconds(sldReproduccion.getValue())); //seek(Duration); mover audio a un tiempo específico (seconds; convertir valor numérico a tiempo).
             }
         });
 
-        sldVolumen.valueProperty().addListener((propiedad, valorAnterior, valorActual) -> {
-            if (reproductor != null) {
-                reproductor.setVolume(valorActual.doubleValue() / 100.0);
+        sldVolumen.valueProperty().addListener((propiedad, valorAnterior, valorActual) -> { //valueProperty; obtener valor como propiedad.
+            //addListener; cada vez que la propiedad cambie (valorAnterior, valor Actual), se ejecuta.
+            if (reproductor != null) { //Si el reproductor está inicializado.
+                reproductor.setVolume(valorActual.doubleValue() / 100.0); //setVolume(double); establecer volumen = recibe valores entre 0.0 y 1.0 (conversión de escala).
             }
         });
 
-        btnDesplazarArriba.setOnAction(accion -> desplazarTrackEnLista(-1));
-        btnDesplazarAbajo.setOnAction(accion -> desplazarTrackEnLista(1));
+        btnDesplazarArriba.setOnAction(accion -> desplazarTrackEnLista(-1)); //Desplazar el track seleccionado hacia arriba en la lista (atrás).
+        btnDesplazarAbajo.setOnAction(accion -> desplazarTrackEnLista(1)); //Desplazar el track seleccionado hacia abajo en la lista (adelante).
 
-        listaReproduccionVisual.setOnMouseClicked(accion -> {
-            if (accion.getClickCount() == 2) {
-                Track trackSeleccionado = listaReproduccionVisual.getSelectionModel().getSelectedItem();
-        
-                if (trackSeleccionado != null) {
-                    NodoTrack seleccionado = buscarNodoTrack(trackSeleccionado);
-                    if (seleccionado != null) {
-                        listaReproduccion.setActual(seleccionado);
-                        sincronizar(true);
+        listaReproduccionVisual.setOnMouseClicked(accion -> { //setOnMouseClicked; detectar clics del mouse.
+            if (accion.getClickCount() == 2) { //getClickCount(); retorna número de clics consecutivos.
+                Track trackSeleccionado = listaReproduccionVisual.getSelectionModel().getSelectedItem(); //getSelectionModel; devolver el objeto encargado de administrar la selección del componente. getSelectedItem(); devlver el objeto actualmente seleccionado dentro del componente.
+                
+                if (trackSeleccionado != null) { //Si existe realmente una selección
+                    NodoTrack seleccionado = buscarNodoTrack(trackSeleccionado); //Buscar el nodo que contiene al Track.
+                    if (seleccionado != null) { //Comprobar si se encontró
+                        listaReproduccion.setActual(seleccionado); //Actualizar el nodo activo.
+                        sincronizar(true); //Reproducir y actualizar elementos.
                     }
                 }
             }
@@ -487,95 +488,100 @@ public class Main extends Application { //Main hereda de la clase "Application" 
 
 
     private void cambiarTrack(int direccion) {
+        //Repetir activo 1, se presiona siguiente y hay un track en reproducción = volver al segundo 0.
         if (repetirActivo == 2 && direccion == 1 && reproductor != null) { 
             reproductor.seek(Duration.ZERO); 
             return; 
         }
         
-        NodoTrack actual = listaReproduccion.getActual();
-        if (actual == null) return;
-        
-        if (direccion == 1) {
-            historialReproduccion.incorporar(actual.getTrack());
-        }
-        
-        NodoTrack siguiente = null;
-        if (direccion == 1) {
-            if (reproduccionAleatoria) {
-                if (!ReproduccionAleatoria.estaVacia()) {
-                    siguiente = buscarNodoTrack(ReproduccionAleatoria.remover());
-
-                } else if (repetirActivo == 1) {
-                    sincornizarColaVisual(); 
-                    if (!ReproduccionAleatoria.estaVacia()) {
-                        siguiente = buscarNodoTrack(ReproduccionAleatoria.remover());
-                    }
-                }
-
-            } else {
-                siguiente = actual.getSiguiente();
-                if (siguiente == null && repetirActivo == 1) {
-                    siguiente = listaReproduccion.getInicio();
-                }
-            }
-
-        } else {
-            if (!historialReproduccion.estaVacia()) {
-                siguiente = buscarNodoTrack(historialReproduccion.remover());
-
-            } else if (actual.getAnterior() != null) {
-                siguiente = actual.getAnterior();
-            }
-        }
-
-        if (siguiente != null) {
-            listaReproduccion.setActual(siguiente);
-            sincronizar(true);
-            listaReproduccionVisual.getSelectionModel().select(siguiente.getTrack());
-        }
-    }
-
-    private void sincronizar(boolean reproduccionAutomatica) {
+        //Si no hay reproducción
         NodoTrack actual = listaReproduccion.getActual();
         if (actual == null) {
             return;
         }
+        
+        if (direccion == 1) {
+            historialReproduccion.incorporar(actual.getTrack()); //Incorporar track (en pila) para reproducción hacia atrás.
+        }
+        
+        NodoTrack siguiente = null;
+        if (direccion == 1) { //Siguiente
+            if (reproduccionAleatoria) { //Reproducción aleatoria.
+                if (!ReproduccionAleatoria.estaVacia()) { //Si cola tiene registros.
+                    siguiente = buscarNodoTrack(ReproduccionAleatoria.remover());
 
-        Track trackActual = actual.getTrack();
+                } else if (repetirActivo == 1) { //Si repetir activo.
+                    sincornizarColaVisual(); //Volver a crear la cola de reproducción aleatoria basándose en la lista actual.
+                    if (!ReproduccionAleatoria.estaVacia()) { //Si cola tiene registros.
+                        siguiente = buscarNodoTrack(ReproduccionAleatoria.remover());
+                    }
+                }
+
+            } else { //Lista normal.
+                siguiente = actual.getSiguiente();
+                if (siguiente == null && repetirActivo == 1) {
+                    siguiente = listaReproduccion.getInicio(); //Volver al inicio.
+                }
+            }
+
+        } else { //Atrás
+            if (!historialReproduccion.estaVacia()) { //Si pila tiene registros.
+                siguiente = buscarNodoTrack(historialReproduccion.remover()); //Track del historial
+
+            } else if (actual.getAnterior() != null) { //Sino track anterior (lista enlazada).
+                siguiente = actual.getAnterior();
+            }
+        }
+
+        if (siguiente != null) { //Validar si existe track para realizar el cambio, sino (siguiente = null).
+            listaReproduccion.setActual(siguiente); //Cambiar.
+            sincronizar(true); //Reproducir y actualizar elementos.
+            listaReproduccionVisual.getSelectionModel().select(siguiente.getTrack()); //Selección en interfaz
+        }
+    }
+
+    private void sincronizar(boolean reproduccionAutomatica) {
+        NodoTrack actual = listaReproduccion.getActual(); //Obtener nodo actual.
+        if (actual == null) {
+            return;
+        }
+
+        Track trackActual = actual.getTrack(); //Obtener track actual.
+        //Actualizar información.
         lblNombreTrack.setText(trackActual.getNombreTrack());
         lblNombreArtista.setText(trackActual.getNombreArtista());
 
         try {
-            if (trackActual.getRutaPortada() != null && !trackActual.getRutaPortada().isEmpty()) {
+            if (trackActual.getRutaPortada() != null && !trackActual.getRutaPortada().isEmpty()) { //Si existe portada.
                 File archivoPortada = new File(trackActual.getRutaPortada());
                 if (archivoPortada.exists()) {
-                    rectPortada.setFill(new ImagePattern(new Image(archivoPortada.toURI().toString())));
+                    rectPortada.setFill(new ImagePattern(new Image(archivoPortada.toURI().toString()))); //Mostar
 
                 } else { 
-                    rectPortada.setFill(Color.rgb(40,40,40));
+                    rectPortada.setFill(Color.rgb(40,40,40)); //Crear portada vacía
                 }
 
-            } else { 
+            } else { //Crear portada vacía
                 rectPortada.setFill(Color.rgb(40,40,40));
             }
 
-        } catch (Exception error) {
+        } catch (Exception error) { //Crear portada vacía
             rectPortada.setFill(Color.rgb(40,40,40));
         }
 
-        if (reproductor != null) { 
-            reproductor.stop(); 
-            reproductor.dispose(); 
+        if (reproductor != null) { //Si reproductor existe.
+            reproductor.stop(); //stop(); detener y reiniciar.
+            reproductor.dispose(); //dispose(); liberar memoria
         }
 
         try {
-            File archivoTrack = new File(trackActual.getRutaAudio());
+            File archivoTrack = new File(trackActual.getRutaAudio()); //Representar el archivo físico del audio en el sistema.
             if (archivoTrack.exists()) {
-                Media media = new Media(archivoTrack.toURI().toString());
-                reproductor = new MediaPlayer(media);
-                reproductor.setVolume(sldVolumen.getValue() / 100.0);
+                Media media = new Media(archivoTrack.toURI().toString()); //Conviertir el archivo en un recurso multimedia compatible.
+                reproductor = new MediaPlayer(media); //Crear un nuevo reproductor.
+                reproductor.setVolume(sldVolumen.getValue() / 100.0); //Aplicar el volumen definido.
 
-                reproductor.setOnReady(() -> {
+                reproductor.setOnReady(() -> { // Configura el slider según la duración real del track.
                     double TiempoTotalTrack = reproductor.getTotalDuration().toSeconds();
                     sldReproduccion.setMax(TiempoTotalTrack);
                 });
