@@ -735,14 +735,14 @@ public class Main extends Application { //Main hereda de la clase "Application" 
     }
 
     private String transformarTiempoReproduccion(double segundosTotales) {
-        if (Double.isNaN(segundosTotales)) { 
+        if (Double.isNaN(segundosTotales)) { //Si no se ha definido el tiempo.
             return "0:00";
         }
 
-        segundosTotales = Math.abs(segundosTotales); 
-        int minutos = (int) segundosTotales / 60;
-        int segundos = (int) segundosTotales % 60;
-        return String.format("%d:%02d", minutos, segundos);
+        segundosTotales = Math.abs(segundosTotales); //Convertir a valores positivos (Math.abs).
+        int minutos = (int) segundosTotales / 60; //Eliminar decimales.
+        int segundos = (int) segundosTotales % 60; //Calcular segundos restantes.
+        return String.format("%d:%02d", minutos, segundos); //Formato final.
     }
 
     private void ListaPrueba() {
@@ -752,7 +752,7 @@ public class Main extends Application { //Main hereda de la clase "Application" 
     }
 
 
-    public static void main(String[] args) { 
+    public static void main(String[] args) { //niciar el entorno JavaFX y delegar la ejecución al método start().
         launch(args); 
     }
 }
