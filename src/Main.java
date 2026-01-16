@@ -58,7 +58,7 @@ public class Main extends Application { //Main hereda de la clase "Application" 
     private Image imgModoRepetirOff, imgModoRepetirOn, imgimgModoRepetirUno;
     private Image imgVolumen, imgImportarCarpeta, imgDesplazarArriba, imgDesplazarAbajo;
 
-    // Conexión con las estructuras de datos del paquete 'modelo'.
+    //Conexión con las estructuras de datos del paquete 'modelo'.
     private ListaReproduccion listaReproduccion = new ListaReproduccion(); //Lista doblemente enlazada (estructura principal).
     private PilaHistorialReproduccion historialReproduccion = new PilaHistorialReproduccion(); //Pila LIFO.  
     private ColaReproduccionAleatoria ReproduccionAleatoria = new ColaReproduccionAleatoria(); //Cola FIFO.
@@ -66,8 +66,8 @@ public class Main extends Application { //Main hereda de la clase "Application" 
     private MediaPlayer reproductor; //Motor multimedia responsable de la reproducción de audio.
 
     //Variables de estado que controlan el comportamiento del reproductor.
-    private boolean reproduccionActiva = false; //Reproducción activa
-    private boolean reproduccionAleatoria = false; //Reprodcción aleatoria
+    private boolean reproduccionActiva = false; //Reproducción activa.
+    private boolean reproduccionAleatoria = false; //Reprodcción aleatoria.
     private int repetirActivo = 0; // Estados de repetición: 0 = no activo, 1 = activo, 2 = activo para 1. 
 
 
@@ -143,8 +143,8 @@ public class Main extends Application { //Main hereda de la clase "Application" 
         );
         vistaPrincipal.getStylesheets().add(cssInterfaz); //Asociar los estilos visuales a la vista principal.
 
-        ventanaPrincipal.setTitle("Reproductor"); //Definir el título de la ventana principal (setTitle).
-        ventanaPrincipal.setScene(vistaPrincipal); //Inseertar la escena dentro del contenedor principal.
+        ventanaPrincipal.setTitle("Reproductor"); //Definir el título de la ventana principal (Title).
+        ventanaPrincipal.setScene(vistaPrincipal); //Insertar la escena dentro del contenedor principal (Scene).
         ventanaPrincipal.show(); //Hacer visible la ventana al usuario (show).
 
         sincronizar(false); //Sincronizar el estado visual inicial antes de la interacción del usuario.
@@ -179,7 +179,7 @@ public class Main extends Application { //Main hereda de la clase "Application" 
         //Configuración visual del área de carátula del track.
         rectPortada.setWidth(maxWidth); 
         rectPortada.setHeight(maxWidth);
-        rectPortada.setArcWidth(25); //Borde redondeado
+        rectPortada.setArcWidth(25); //Borde redondeado.
         rectPortada.setArcHeight(25);
         rectPortada.setFill(Color.rgb(40, 40, 40)); //Color base utilizado cuando no existe imagen asociada.
         
@@ -197,7 +197,7 @@ public class Main extends Application { //Main hereda de la clase "Application" 
 
         lblNombreTrack.setStyle("-fx-text-fill: white; -fx-font-size: 26px; -fx-font-weight: bold; -fx-font-family: 'Segoe UI';");
         lblNombreArtista.setStyle("-fx-text-fill: #b3b3b3; -fx-font-size: 20px; -fx-font-weight: bold; -fx-font-family: 'Segoe UI';");
-        informacion.getChildren().addAll(lblNombreTrack, lblNombreArtista);
+        informacion.getChildren().addAll(lblNombreTrack, lblNombreArtista); //getChildren(); devolver la lista de nodos del contenedor (agregar, quitar o reorganizar componentes visuales).
 
         //Panel de control del progreso de reproducción.
         VBox panelParcialReproduccion = new VBox(8);
@@ -212,8 +212,8 @@ public class Main extends Application { //Main hereda de la clase "Application" 
         
         Region espaciadoReferenciaTiempo = new Region(); //Separador entre componentes.
         HBox.setHgrow(espaciadoReferenciaTiempo, Priority.ALWAYS);
-        referenciaTiempo.getChildren().addAll(lblTiempoActual, espaciadoReferenciaTiempo, lblTiempoRestante);
-        panelParcialReproduccion.getChildren().addAll(sldReproduccion, referenciaTiempo);
+        referenciaTiempo.getChildren().addAll(lblTiempoActual, espaciadoReferenciaTiempo, lblTiempoRestante); //getChildren(); devolver la lista de nodos del contenedor (agregar, quitar o reorganizar componentes visuales).
+        panelParcialReproduccion.getChildren().addAll(sldReproduccion, referenciaTiempo); //getChildren(); devolver la lista de nodos del contenedor (agregar, quitar o reorganizar componentes visuales).
 
         //Panel que agrupa los controles principales de reproducción.
         HBox panelParcialControles = new HBox();
@@ -229,7 +229,7 @@ public class Main extends Application { //Main hereda de la clase "Application" 
         btnSiguiente = establecerVisualBoton(imgSiguiente, 20, 40);
         btnModoRepetir = establecerVisualBoton(imgModoRepetirOff, 16, 40);
 
-        panelParcialControles.getChildren().addAll(btnModoAleatorio, btnAnterior, btnReproducirPausar, btnSiguiente, btnModoRepetir);
+        panelParcialControles.getChildren().addAll(btnModoAleatorio, btnAnterior, btnReproducirPausar, btnSiguiente, btnModoRepetir); //getChildren(); devolver la lista de nodos del contenedor (agregar, quitar o reorganizar componentes visuales).
 
         //Panel para ajuste de volumen de reproducción.
         HBox panelParcialVolumen = new HBox(15);
@@ -245,10 +245,10 @@ public class Main extends Application { //Main hereda de la clase "Application" 
         sldVolumen.setPrefWidth(200); 
         sldVolumen.setStyle("-fx-control-inner-background: #333; -fx-accent: #888; -fx-cursor: hand;");
 
-        panelParcialVolumen.getChildren().addAll(recursoVolumen, sldVolumen);
+        panelParcialVolumen.getChildren().addAll(recursoVolumen, sldVolumen); //getChildren(); devolver la lista de nodos del contenedor (agregar, quitar o reorganizar componentes visuales).
 
         //Construcción final del panel lateral izquierdo.
-        panelVertical.getChildren().addAll(rectPortada, informacion, panelParcialReproduccion, panelParcialControles, panelParcialVolumen);
+        panelVertical.getChildren().addAll(rectPortada, informacion, panelParcialReproduccion, panelParcialControles, panelParcialVolumen); //getChildren(); devolver la lista de nodos del contenedor (agregar, quitar o reorganizar componentes visuales).
         
         return panelVertical;
     }
@@ -272,7 +272,7 @@ public class Main extends Application { //Main hereda de la clase "Application" 
         //Operador lambda (->); expresar comportamiento sin crear clases adicionales.
         btnImportarCarpeta.setOnAction(accion -> importarCarpeta(ventanaPrincipal)); //Control para invocar el selector de directorios del sistema operativo.
 
-        panelSuperior.getChildren().addAll(lblTextoSuperior, espacioPanelSuperior, btnImportarCarpeta);
+        panelSuperior.getChildren().addAll(lblTextoSuperior, espacioPanelSuperior, btnImportarCarpeta); //getChildren(); devolver la lista de nodos del contenedor (agregar, quitar o reorganizar componentes visuales).
 
         //Lista visual que representa la colección de pistas cargadas.
         listaReproduccionVisual.setStyle("-fx-background-color: transparent; -fx-control-inner-background: #000000;");
@@ -280,9 +280,9 @@ public class Main extends Application { //Main hereda de la clase "Application" 
         
         //CellFactory; redefine la representación visual de cada pista.
         listaReproduccionVisual.setCellFactory(parametro -> new ListCell<Track>() {
-            @Override
+            @Override //Indicar redefinición del método updateItem (clase base ListCell declarado como protected).
             protected void updateItem(Track trackEnFila, boolean estaVacio) { //Actualizar la representación visual de la fila según su estado.
-                super.updateItem(trackEnFila, estaVacio);
+                super.updateItem(trackEnFila, estaVacio); //super; ejecutar la versión heredada del método.
                 //Restablecer el estado gráfico antes de renderizar nuevos datos.
                 setText(null);
                 setGraphic(null);
@@ -313,7 +313,7 @@ public class Main extends Application { //Main hereda de la clase "Application" 
                     Label lblNombreArtista = new Label(trackEnFila.getNombreArtista());
                     lblNombreArtista.setStyle("-fx-text-fill: #999; -fx-font-size: 13px; -fx-font-weight: bold;");
                     
-                    informacion.getChildren().addAll(lblNombreTrack, lblNombreArtista);
+                    informacion.getChildren().addAll(lblNombreTrack, lblNombreArtista); //getChildren(); devolver la lista de nodos del contenedor (agregar, quitar o reorganizar componentes visuales).
 
                     //Distribuir el espacio sobrante dentro de la fila.
                     Region espacioFilaVisual = new Region();
@@ -342,8 +342,8 @@ public class Main extends Application { //Main hereda de la clase "Application" 
         lblReferenciaOrden.setStyle("-fx-text-fill: #666; -fx-font-size: 14px; -fx-font-weight: bold;");
         
         //Agrega todos los componentes al panel lateral derecho.
-        panelInferior.getChildren().addAll(lblReferenciaOrden, btnDesplazarArriba, btnDesplazarAbajo);
-        panelVertical.getChildren().addAll(panelSuperior, listaReproduccionVisual, panelInferior);
+        panelInferior.getChildren().addAll(lblReferenciaOrden, btnDesplazarArriba, btnDesplazarAbajo); //getChildren(); devolver la lista de nodos del contenedor (agregar, quitar o reorganizar componentes visuales).
+        panelVertical.getChildren().addAll(panelSuperior, listaReproduccionVisual, panelInferior); //getChildren(); devolver la lista de nodos del contenedor (agregar, quitar o reorganizar componentes visuales).
 
         return panelVertical;
     }
@@ -395,8 +395,8 @@ public class Main extends Application { //Main hereda de la clase "Application" 
 
                 if (trackActual != null) { //Si hay track activo.
                     int posicion = listaReproduccionAleatoria.indexOf(trackActual); //Buscar posición tras la mezcla (indexOf devuelve -1 si el elemento no existe en la lista).
-                    if (posicion != -1) { //Intercambia posiciones (índice 0)
-                        Collections.swap(listaReproduccionAleatoria, 0, posicion);
+                    if (posicion != -1) { 
+                        Collections.swap(listaReproduccionAleatoria, 0, posicion); //Intercambiar posiciones (índice 0)
                     }
                 }
 
@@ -475,9 +475,9 @@ public class Main extends Application { //Main hereda de la clase "Application" 
             if (accion.getClickCount() == 2) { //getClickCount(); retorna número de clics consecutivos.
                 Track trackSeleccionado = listaReproduccionVisual.getSelectionModel().getSelectedItem(); //getSelectionModel; devolver el objeto encargado de administrar la selección del componente. getSelectedItem(); devolver el objeto actualmente seleccionado dentro del componente.
                 
-                if (trackSeleccionado != null) { //Si existe realmente una selección
+                if (trackSeleccionado != null) { //Si existe realmente una selección.
                     NodoTrack seleccionado = buscarNodoTrack(trackSeleccionado); //Buscar el nodo que contiene al Track.
-                    if (seleccionado != null) { //Comprobar si se encontró
+                    if (seleccionado != null) { //Comprobar si se encontró.
                         listaReproduccion.setActual(seleccionado); //Actualizar el nodo activo.
                         sincronizar(true); //Reproducir y actualizar elementos.
                     }
@@ -494,7 +494,7 @@ public class Main extends Application { //Main hereda de la clase "Application" 
             return; 
         }
         
-        //Si no hay reproducción
+        //Si no hay reproducción.
         NodoTrack actual = listaReproduccion.getActual();
         if (actual == null) {
             return;
@@ -505,7 +505,7 @@ public class Main extends Application { //Main hereda de la clase "Application" 
         }
         
         NodoTrack siguiente = null;
-        if (direccion == 1) { //Siguiente
+        if (direccion == 1) { //Siguiente.
             if (reproduccionAleatoria) { //Reproducción aleatoria.
                 if (!ReproduccionAleatoria.estaVacia()) { //Si cola tiene registros.
                     siguiente = buscarNodoTrack(ReproduccionAleatoria.remover());
@@ -524,9 +524,9 @@ public class Main extends Application { //Main hereda de la clase "Application" 
                 }
             }
 
-        } else { //Atrás
+        } else { //Atrás.
             if (!historialReproduccion.estaVacia()) { //Si pila tiene registros.
-                siguiente = buscarNodoTrack(historialReproduccion.remover()); //Track del historial
+                siguiente = buscarNodoTrack(historialReproduccion.remover()); //Track del historial.
 
             } else if (actual.getAnterior() != null) { //Sino track anterior (lista enlazada).
                 siguiente = actual.getAnterior();
@@ -536,7 +536,7 @@ public class Main extends Application { //Main hereda de la clase "Application" 
         if (siguiente != null) { //Validar si existe track para realizar el cambio, sino (siguiente = null).
             listaReproduccion.setActual(siguiente); //Cambiar.
             sincronizar(true); //Reproducir y actualizar elementos.
-            listaReproduccionVisual.getSelectionModel().select(siguiente.getTrack()); //Selección en interfaz
+            listaReproduccionVisual.getSelectionModel().select(siguiente.getTrack()); //Selección en interfaz.
         }
     }
 
@@ -555,23 +555,23 @@ public class Main extends Application { //Main hereda de la clase "Application" 
             if (trackActual.getRutaPortada() != null && !trackActual.getRutaPortada().isEmpty()) { //Si existe portada.
                 File archivoPortada = new File(trackActual.getRutaPortada());
                 if (archivoPortada.exists()) {
-                    rectPortada.setFill(new ImagePattern(new Image(archivoPortada.toURI().toString()))); //Mostar
+                    rectPortada.setFill(new ImagePattern(new Image(archivoPortada.toURI().toString()))); //Mostar.
 
                 } else { 
-                    rectPortada.setFill(Color.rgb(40,40,40)); //Crear portada vacía
+                    rectPortada.setFill(Color.rgb(40,40,40)); //Crear portada vacía.
                 }
 
-            } else { //Crear portada vacía
+            } else { //Crear portada vacía.
                 rectPortada.setFill(Color.rgb(40,40,40));
             }
 
-        } catch (Exception error) { //Crear portada vacía
+        } catch (Exception error) { //Crear portada vacía.
             rectPortada.setFill(Color.rgb(40,40,40));
         }
 
         if (reproductor != null) { //Si reproductor existe.
             reproductor.stop(); //stop(); detener y reiniciar.
-            reproductor.dispose(); //dispose(); liberar memoria
+            reproductor.dispose(); //dispose(); liberar memoria.
         }
 
         try {
@@ -591,12 +591,12 @@ public class Main extends Application { //Main hereda de la clase "Application" 
                         double parcial = tiempoActual.toSeconds(); //Tiempo actual.
                         double total = reproductor.getTotalDuration().toSeconds(); //Tiempo total.
                         sldReproduccion.setValue(parcial); //Mover slider a valor actual.
-                        lblTiempoActual.setText(transformarTiempoReproduccion(parcial)); //Convertir y mostar tiempo actual
+                        lblTiempoActual.setText(transformarTiempoReproduccion(parcial)); //Convertir y mostar tiempo actual.
                         lblTiempoRestante.setText("-" + transformarTiempoReproduccion(total - parcial)); //Convertir, resta el tiempo reproducido al total y mostrar.
                     }
                 });
 
-                reproductor.setOnEndOfMedia(() -> btnSiguiente.fire());//Cuando track termina, fire() actúa como si se hubiera hecho clic en el botón siguiente.
+                reproductor.setOnEndOfMedia(() -> btnSiguiente.fire()); //Cuando track termina, fire() actúa como si se hubiera hecho clic en el botón siguiente.
 
                 if (reproduccionAutomatica) { 
                     reproductor.play(); 
@@ -652,11 +652,11 @@ public class Main extends Application { //Main hereda de la clase "Application" 
 
     private void importarCarpeta(Stage ventanaPrincipal) {
         DirectoryChooser selectorCarpeta = new DirectoryChooser(); //DirectoryChooser; permite navegar por carpetas del sistema.
-        File carpeta = selectorCarpeta.showDialog(ventanaPrincipal); //Abrir ventana
+        File carpeta = selectorCarpeta.showDialog(ventanaPrincipal); //Abrir ventana.
         if (carpeta != null) { //Si se eligió carpeta.
             File[] listaArchivo = carpeta.listFiles((carpetaArchivo, nombreArchivo) -> nombreArchivo.toLowerCase().endsWith(".mp3")); //Devolver arreglos con filtros.
             if (listaArchivo != null) { //Si no existen errores.
-                for (File archivo : listaArchivo) { //Recorrer archivos
+                for (File archivo : listaArchivo) { //Recorrer archivos.
                     listaReproduccion.incorporarFinal(new Track(archivo.getName().replace(".mp3",""), "No especificado", archivo.getAbsolutePath(), null));
                 }
                 actualizarListaReproduccionVisual();
@@ -695,10 +695,10 @@ public class Main extends Application { //Main hereda de la clase "Application" 
 
     private Image establecerVisual(String recurso) {
         try {
-            File archivo = new File(recurso); //Representar ruta del sistema
+            File archivo = new File(recurso); //Representar ruta del sistema.
             if(archivo.exists()) {
                 return new Image(archivo.toURI().toString()); //toURI(); convertir el archivo en una URL válida. toString(); convertir a texto.
-            } else { //Si no existe
+            } else { //Si no existe.
             return null; 
             }
 
@@ -717,7 +717,7 @@ public class Main extends Application { //Main hereda de la clase "Application" 
 
         Button boton = new Button(); //Crear botón.
         boton.setGraphic(recursoBoton); //Insertar recurso visual.
-        boton.setStyle("-fx-background-color: transparent; -fx-cursor: hand; -fx-padding: 0;"); //Estilo
+        boton.setStyle("-fx-background-color: transparent; -fx-cursor: hand; -fx-padding: 0;"); //Estilo.
         boton.setAlignment(Pos.CENTER); //Centrar
 
         if (ancho > 0) { //Forzar un ancho fijo (visual).
