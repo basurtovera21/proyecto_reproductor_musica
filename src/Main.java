@@ -748,6 +748,16 @@ public class Main extends Application { //Main hereda de la clase "Application" 
     private void ListaPrueba() {
         listaReproduccion.incorporarFinal(new Track("Champagne Supernova (Remastered)", "Oasis", "lista_prueba/Champagne Supernova (Remastered).mp3", "lista_prueba/chs.jpg"));
         listaReproduccion.incorporarFinal(new Track("Stand By Me (Remastered)", "Oasis", "lista_prueba/Stand By Me (Remastered).mp3", "lista_prueba/sbm.jpg"));
+        listaReproduccion.incorporarFinal(new Track("Ain't No Sunshine", "Bill Withers", "lista_prueba/Ain't No Sunshine.mp3", "lista_prueba/ans.jpg"));
+        listaReproduccion.incorporarFinal(new Track("Paranoid (2012 - Remaster)", "Black Sabbath", "lista_prueba/Paranoid (2012 - Remaster).mp3", "lista_prueba/pid.jpg"));
+        listaReproduccion.incorporarFinal(new Track("No Woman, No Cry (Live 1975)", "Bob Marley", "lista_prueba/No Woman, No Cry (Live 1975).mp3", "lista_prueba/nwnc.jpg"));
+        listaReproduccion.incorporarFinal(new Track("Moon River", "Frank Sinatra", "lista_prueba/Moon River.mp3", "lista_prueba/mor.jpg"));
+        listaReproduccion.incorporarFinal(new Track("My Way (2008 Remastered)", "Frank Sinatra", "lista_prueba/My Way (2008 Remastered).mp3", "lista_prueba/mw.jpg"));
+        listaReproduccion.incorporarFinal(new Track("Rock and Roll (Remaster)", "Led Zeppelin", "lista_prueba/Rock and Roll (Remaster).mp3", "lista_prueba/roaro.jpg"));
+        listaReproduccion.incorporarFinal(new Track("Stir It Up", "Bob Marley & The Wailers", "lista_prueba/Stir It Up.mp3", "lista_prueba/siu.jpg"));
+        listaReproduccion.incorporarFinal(new Track("T.N.T.", "AC/DC", "lista_prueba/T.N.T..mp3", "lista_prueba/tnt.jpg"));
+        listaReproduccion.incorporarFinal(new Track("Gravity (Live at the Nokia Theatre, Los Angeles, CA - December 2007)", "John Mayer", "lista_prueba/Gravity (Live at the Nokia Theatre, Los Angeles, CA - December 2007).mp3", "lista_prueba/jm.jpg"));
+        listaReproduccion.incorporarFinal(new Track("Slow Dancing in a Burning Room (Live at the Nokia Theatre, Los Angeles, CA - December 2007)", "John Mayer", "lista_prueba/Slow Dancing in a Burning Room (Live at the Nokia Theatre, Los Angeles, CA - December 2007).mp3", "lista_prueba/jm.jpg"));
         actualizarListaReproduccionVisual();
     }
 
